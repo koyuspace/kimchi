@@ -8,7 +8,7 @@
         <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
       </symbol>
     </svg>
-    <div class="container" style="padding: 50px 0 100px 0">
+    <div class="container widget" style="padding: 50px 0 100px 0">
       <div class="alert alert-danger d-flex align-items-center" role="alert" v-bind:data-error="isError">
         <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
         <div>
@@ -108,7 +108,7 @@ footer {
   transform: translate(-50%, -50%);
   margin: 0 auto;
   font-size: 8pt;
-  color: #aaa;
+  color: #666;
 }
 .btn {
   margin-top: 20px;
@@ -118,5 +118,23 @@ div[data-error="false"] {
 }
 div[data-success="false"] {
   display: none !important;
+}
+.widget {
+  display: block;
+  margin: 0 auto;
+  max-height: 450px;
+  margin-top: calc(50vh - 232px);
+  background: #eee;
+  padding: 20px;
+  padding-bottom: 60px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  width: 50%;
+  text-align: center;
+}
+.alert {
+  margin-left: 20px;
+  margin-right: 20px;
+  margin-top: -20px;
 }
 </style>

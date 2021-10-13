@@ -1,5 +1,6 @@
 <template>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark" v-if="user.email">
+    <a class="navbar-brand logo" @click.prevent="page='home'" href="#">김치</a>
     <div class="container-fluid">
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -8,6 +9,12 @@
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
                     <a :class="{ 'nav-link': true, active: page === 'home'}" @click.prevent="page='home'" href="#">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a :class="{ 'nav-link': true, active: page === 'services'}" @click.prevent="page='services'" href="#">Services</a>
+                </li>
+                <li class="nav-item">
+                    <a :class="{ 'nav-link': true, active: page === 'firewall'}" @click.prevent="page='firewall'" href="#">Firewall</a>
                 </li>
             </ul>
             <ul class="navbar-nav">
@@ -23,6 +30,15 @@
     </div>
 </nav>
 </template>
+
+<style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Black+Han+Sans&display=swap');
+.logo {
+  font-family: 'Black Han Sans', sans-serif;
+  user-select: none;
+  margin-left: 20px;
+}
+</style>
 
 <script>
 import { supabase } from "../supabase"
