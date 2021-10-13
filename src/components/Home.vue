@@ -6,14 +6,10 @@
         </div>
         <div class="metrics">
             <h2 style="font-weight:bold;">System Metrics</h2>
-            <div class="progress progress-bar bg-danger" role="progressbar" :style="'width: '+user.cpu+'%;'" :aria-valuenow="user.cpu" aria-valuemin="0" aria-valuemax="100">
-                CPU: {{ user.cpu }}%
-            </div>
-            <div class="progress progress-bar bg-warning" role="progressbar" :style="'width: '+user.ram+'%;'" :aria-valuenow="user.ram" aria-valuemin="0" aria-valuemax="100">
-                RAM: {{ user.ram }}%
-            </div>
-            <div class="progress progress-bar bg-success" role="progressbar" :style="'width: '+user.disk+'%;'" :aria-valuenow="user.disk" aria-valuemin="0" aria-valuemax="100">
-                Disk: {{ user.disk }}%
+            <div class="progressbars">
+                <div class="progress progress-bar bg-danger" role="progressbar" :style="'width: '+user.cpu+'%;'" :aria-valuenow="user.cpu" aria-valuemin="0" aria-valuemax="100"></div><span style="float:right;"><b>CPU:</b> {{ user.cpu }}%</span>
+                <div class="progress progress-bar bg-warning" role="progressbar" :style="'width: '+user.ram+'%;'" :aria-valuenow="user.ram" aria-valuemin="0" aria-valuemax="100"></div><span style="float:right;"><b>RAM:</b> {{ user.ram }}%</span>
+                <div class="progress progress-bar bg-success" role="progressbar" :style="'width: '+user.disk+'%;'" :aria-valuenow="user.disk" aria-valuemin="0" aria-valuemax="100"></div><span style="float:right;"><b>Disk:</b> {{ user.disk }}%</span>
             </div>
             <p><b>Load average:</b> {{ user.la }}</p>
         </div>
@@ -67,6 +63,9 @@ div {
 .metrics p {
     margin-left: 20px;
 }
+.metrics span {
+    margin-top: -43px;
+}
 .motd {
     position: absolute;
     right: 100px;
@@ -119,6 +118,9 @@ div {
     text-align: center;
     font-weight: 800;
     font-size: 48pt;
+}
+.progressbars {
+    width: 80%;
 }
 .progress {
     padding: 12px !important;
