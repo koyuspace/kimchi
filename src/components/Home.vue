@@ -15,6 +15,7 @@
             <div class="progress progress-bar bg-success" role="progressbar" :style="'width: '+user.disk+'%;'" :aria-valuenow="user.disk" aria-valuemin="0" aria-valuemax="100">
                 Disk: {{ user.disk }}%
             </div>
+            <p><b>Load average:</b> {{ user.la }}</p>
         </div>
         <div class="motd">
             <h2 style="font-weight:bold;">Message of the Day</h2>
@@ -57,15 +58,20 @@ div {
     padding: 20px;
     border-radius: 4px;
     border: 1px solid #ccc;
-    text-align: center;
-    height: 220px;
+    height: 250px;
     width: 350px;
+}
+.metrics h2 {
+    text-align: center;
+}
+.metrics p {
+    margin-left: 20px;
 }
 .motd {
     position: absolute;
     right: 100px;
     width: 30%;
-    top: 460px;
+    top: 490px;
     background: #eee;
     padding: 20px;
     border-radius: 4px;
@@ -158,6 +164,11 @@ export default {
             window.setInterval(function() {
                 axios.post(backend+"/api/v1/get/disk", {user_id: store.user.id}).then(response => {
                     store.user.disk = parseInt(response.data)
+                })
+            }, 1000)
+            window.setInterval(function() {
+                axios.post(backend+"/api/v1/get/la", {user_id: store.user.id}).then(response => {
+                    store.user.la = response.data
                 })
             }, 1000)
             axios.post(backend+"/api/v1/get/motd", {user_id: store.user.id}).then(response => {

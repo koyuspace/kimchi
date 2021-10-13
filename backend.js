@@ -2,6 +2,7 @@ const express = require('express')
 const os 	= require('os-utils');
 const bodyParser = require('body-parser')
 const osu = require('node-os-utils')
+const osn = require('os');
 const checkDiskSpace = require('check-disk-space').default
 const { exec } = require("child_process");
 const fs = require('fs')
@@ -72,6 +73,20 @@ app.post('/api/v1/get/disk', (req, res) => {
         const diskSpacePercentage = diskSpace.free / diskSpace.size * 10
         res.send(String(diskSpacePercentage))
       })
+    }
+  }
+})
+
+app.post('/api/v1/get/la', (req, res) => {
+  if (req.body.user_id) {
+    let authenticated = false
+    process.env.OPS.split(",").forEach(e => {
+      if (e === req.body.user_id) {
+        authenticated = true
+      }
+    });
+    if (authenticated) {
+      res.send(osn.loadavg()[0].toFixed(2).toString())
     }
   }
 })
