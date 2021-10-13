@@ -19,7 +19,7 @@ app.post('/api/v1/get/authenticated', (req, res) => {
   if (req.body.user_id) {
     let authenticated = "false"
     req.body.user_id.split(",").forEach(e => {
-      if (e === process.env.OPS.toString()) {
+      if (e === req.body.user_id) {
         authenticated = "true"
       }
     });
@@ -31,7 +31,7 @@ app.post('/api/v1/get/ram', (req, res) => {
   if (req.body.user_id) {
     let authenticated = false
     req.body.user_id.split(",").forEach(e => {
-      if (e === process.env.OPS.toString()) {
+      if (e === req.body.user_id) {
         authenticated = true
       }
     });
@@ -46,7 +46,7 @@ app.post('/api/v1/get/cpu', (req, res) => {
   if (req.body.user_id) {
     let authenticated = false
     req.body.user_id.split(",").forEach(e => {
-      if (e === process.env.OPS.toString()) {
+      if (e === req.body.user_id) {
         authenticated = true
       }
     });
@@ -63,7 +63,7 @@ app.post('/api/v1/get/disk', (req, res) => {
   if (req.body.user_id) {
     let authenticated = false
     req.body.user_id.split(",").forEach(e => {
-      if (e === process.env.OPS.toString()) {
+      if (e === req.body.user_id) {
         authenticated = true
       }
     });
@@ -80,7 +80,7 @@ app.post('/api/v1/ufw/status', (req, res) => {
   if (req.body.user_id) {
     let authenticated = false
     req.body.user_id.split(",").forEach(e => {
-      if (e === process.env.OPS.toString()) {
+      if (e === req.body.user_id) {
         authenticated = true
       }
     });
@@ -96,7 +96,7 @@ app.post('/api/v1/get/motd', (req, res) => {
   if (req.body.user_id) {
     let authenticated = false
     req.body.user_id.split(",").forEach(e => {
-      if (e === process.env.OPS.toString()) {
+      if (e === req.body.user_id) {
         authenticated = true
       }
     });
