@@ -7,10 +7,12 @@
       class="avatar image"
       :style="{ height: size, width: size }"
     />
-    <div
+    <img
       v-else
       class="avatar no-image"
       :style="{ height: size, width: size }"
+      alt="Avatar"
+      :src="gravatar"
     />
     <div :style="{ width: size }">
       <label class="upload-button block" for="single">
@@ -30,10 +32,19 @@
 <script>
 import { ref, toRefs, watch } from "vue"
 import { supabase } from "../supabase"
+import { store } from "../store"
+import md5 from "md5"
 
 export default {
   props: {
     path: String,
+  },
+  computed: {
+    gravatar: {
+      get() {
+        return "https://www.gravatar.com/avatar/"+md5(store.user.email)+"?d=mp&s=160"
+      }
+    }
   },
   emits: ["upload", "update:path"],
   setup(prop, { emit }) {
