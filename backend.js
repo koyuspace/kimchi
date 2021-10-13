@@ -107,6 +107,70 @@ app.post('/api/v1/ufw/status', (req, res) => {
   }
 })
 
+app.post('/api/v1/ufw/enable', (req, res) => {
+  if (req.body.user_id) {
+    let authenticated = false
+    process.env.OPS.split(",").forEach(e => {
+      if (e === req.body.user_id) {
+        authenticated = true
+      }
+    });
+    if (authenticated) {
+      exec("echo "+process.env.SUDO_PW+" | sudo -S ufw enable", (error, stdout, stderr) => {
+        res.send(stdout)
+      })
+    }
+  }
+})
+
+app.post('/api/v1/ufw/disable', (req, res) => {
+  if (req.body.user_id) {
+    let authenticated = false
+    process.env.OPS.split(",").forEach(e => {
+      if (e === req.body.user_id) {
+        authenticated = true
+      }
+    });
+    if (authenticated) {
+      exec("echo "+process.env.SUDO_PW+" | sudo -S ufw disable", (error, stdout, stderr) => {
+        res.send(stdout)
+      })
+    }
+  }
+})
+
+app.post('/api/v1/ufw/add', (req, res) => {
+  if (req.body.user_id) {
+    let authenticated = false
+    process.env.OPS.split(",").forEach(e => {
+      if (e === req.body.user_id) {
+        authenticated = true
+      }
+    });
+    if (authenticated) {
+      exec("echo "+process.env.SUDO_PW+" | sudo -S ufw allow "+req.body.port, (error, stdout, stderr) => {
+        res.send(stdout)
+      })
+    }
+  }
+})
+
+app.post('/api/v1/ufw/del', (req, res) => {
+  if (req.body.user_id) {
+    let authenticated = false
+    process.env.OPS.split(",").forEach(e => {
+      if (e === req.body.user_id) {
+        authenticated = true
+      }
+    });
+    if (authenticated) {
+      exec("echo "+process.env.SUDO_PW+" | sudo -S ufw delete allow "+req.body.port, (error, stdout, stderr) => {
+        res.send(stdout)
+      })
+    }
+  }
+})
+
 app.post('/api/v1/get/motd', (req, res) => {
   if (req.body.user_id) {
     let authenticated = false
