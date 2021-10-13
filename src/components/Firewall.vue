@@ -2,9 +2,7 @@
     <div>
         <div class="widget">
             <h1>Firewall</h1>
-            <code>
-                {{ ufw_status }}
-            </code>
+            <pre v-html="ufw_status"></pre>
         </div>
     </div>
 </template>
@@ -15,16 +13,18 @@ div {
 }
 h1 {
     font-weight: 800;
+    text-align: center;
+    margin-bottom: 40px;
 }
 .widget {
     display: block;
     margin: 0 auto;
     background: #eee;
-    padding: 20px;
+    padding: 40px;
+    padding-bottom: 20px;
     border-radius: 4px;
     border: 1px solid #ccc;
-    width: 350px;
-    text-align: center;
+    width: 40%;
 }
 </style>
 
