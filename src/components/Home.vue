@@ -153,26 +153,38 @@ export default {
                 store.user.greeting = store.user.email
             }
             const backend = import.meta.env.VITE_BACKEND
+            axios.post(backend+"/api/v1/get/ram", {user_id: store.user.id}).then(response => {
+                store.user.ram = parseInt(response.data)
+            })
+            axios.post(backend+"/api/v1/get/cpu", {user_id: store.user.id}).then(response => {
+                store.user.cpu = parseInt(response.data)
+            })
+            axios.post(backend+"/api/v1/get/disk", {user_id: store.user.id}).then(response => {
+                store.user.disk = parseInt(response.data)
+            })
+            axios.post(backend+"/api/v1/get/la", {user_id: store.user.id}).then(response => {
+                store.user.la = response.data
+            })
             window.setInterval(function() {
                 axios.post(backend+"/api/v1/get/ram", {user_id: store.user.id}).then(response => {
                     store.user.ram = parseInt(response.data)
                 })
-            }, 1000)
+            }, 3000)
             window.setInterval(function() {
                 axios.post(backend+"/api/v1/get/cpu", {user_id: store.user.id}).then(response => {
                     store.user.cpu = parseInt(response.data)
                 })
-            }, 1000)
+            }, 3000)
             window.setInterval(function() {
                 axios.post(backend+"/api/v1/get/disk", {user_id: store.user.id}).then(response => {
                     store.user.disk = parseInt(response.data)
                 })
-            }, 1000)
+            }, 3000)
             window.setInterval(function() {
                 axios.post(backend+"/api/v1/get/la", {user_id: store.user.id}).then(response => {
                     store.user.la = response.data
                 })
-            }, 1000)
+            }, 3000)
             axios.post(backend+"/api/v1/get/motd", {user_id: store.user.id}).then(response => {
                 store.user.motd = response.data
             })
