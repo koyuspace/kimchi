@@ -14,12 +14,12 @@
                     <tr>
                         <td>kimchi-frontend</td>
                         <td>Running</td>
-                        <td><button class="btn btn-danger" disabled><i class="fa fa-stop" aria-hidden="true"></i></button> <button class="btn btn-warning" disabled><i class="fa fa-refresh" aria-hidden="true"></i></button> <button class="btn btn-primary" disabled><i class="fa fa-terminal" aria-hidden="true"></i></button></td>
+                        <td><button class="btn btn-danger" disabled><i class="fa fa-stop" aria-hidden="true"></i></button> <button class="btn btn-warning" disabled><i class="fa fa-refresh" aria-hidden="true"></i></button> <button class="btn btn-primary" disabled><i class="fa fa-terminal" aria-hidden="true"></i></button> <button class="btn btn-secondary" disabled><i class="fa fa-pencil" aria-hidden="true"></i></button></td>
                     </tr>
                     <tr>
                         <td>kimchi-backend</td>
                         <td>Running</td>
-                        <td><button class="btn btn-danger" disabled><i class="fa fa-stop" aria-hidden="true"></i></button> <button class="btn btn-warning" disabled><i class="fa fa-refresh" aria-hidden="true"></i></button> <button class="btn btn-primary" disabled><i class="fa fa-terminal" aria-hidden="true"></i></button></td>
+                        <td><button class="btn btn-danger" disabled><i class="fa fa-stop" aria-hidden="true"></i></button> <button class="btn btn-warning" disabled><i class="fa fa-refresh" aria-hidden="true"></i></button> <button class="btn btn-primary" disabled><i class="fa fa-terminal" aria-hidden="true"></i></button> <button class="btn btn-secondary" disabled><i class="fa fa-pencil" aria-hidden="true"></i></button></td>
                     </tr>
                 </tbody>
             </table>
