@@ -15,7 +15,7 @@
                     <option value="2">Node</option>
                     <option value="3">Python</option>
                 </select><br>
-                <button @click.prevent="deployService" class="btn btn-primary form-control" disabled><i class="fa fa-cogs" aria-hidden="true"></i> Deploy Service</button>
+                <button @click.prevent="deployService" class="btn btn-primary form-control"><i class="fa fa-cogs" aria-hidden="true"></i> Deploy Service</button>
             </form>
         </div>
     </div>
@@ -75,7 +75,10 @@ export default {
             })
         },
         deployService: function() {
-            //TODO: Service deployment
+            if (this.currentTemplate.name !== '') {
+                this.currentTemplate.name = this.currentTemplate.name.replaceAll(" ", "-").toLowerCase()
+                this.currentTemplate.deploy = this.currentTemplate.deploy.replaceAll("%%name%%", this.currentTemplate.name)
+            }
         }
     },
     computed: {
