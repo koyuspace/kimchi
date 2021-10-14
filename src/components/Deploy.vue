@@ -45,19 +45,19 @@ export default {
                     name: '',
                     command: 'java -jar',
                     file: 'server.jar',
-                    deploy: '#!/bin/bash\nwget https://papermc.io/api/v2/projects/paper/versions/1.17.1/builds/327/downloads/paper-1.17.1-327.jar -O server.jar\necho "eula=true" > eula.txt'
+                    deploy: '#!/bin/bash\nmkdir %%name%%\ncd %%name%%\nwget https://papermc.io/api/v2/projects/paper/versions/1.17.1/builds/327/downloads/paper-1.17.1-327.jar -O server.jar\necho "eula=true" > eula.txt'
                 },
                 {
                     name: '',
                     command: 'node',
                     file: 'index.js',
-                    deploy: ''
+                    deploy: '#!/bin/bash\nmkdir %%name%%'
                 },
                 {
                     name: '',
                     command: 'python',
                     file: 'main.py',
-                    deploy: ''
+                    deploy: '#!/bin/bash\nmkdir %%name%%'
                 }
             ]
         }
