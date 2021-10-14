@@ -1,7 +1,8 @@
 <template>
     <div>
         <div class="widget">
-            <h1>Services</h1>
+            <button class="btn btn-success" @click.prevent="page='deploy'" style="float:right;"><i class="fa fa-plus" aria-hidden="true"></i> Deploy new service</button>
+            <br><br><h1>Services</h1>
             <table class="table">
                 <thead>
                     <tr>

@@ -5,6 +5,7 @@
   <Home v-if="store.user && store.page === 'home'" />
   <Firewall v-if="store.user && store.page === 'firewall'" />
   <Services v-if="store.user && store.page === 'services'" />
+  <Deploy v-if="store.user && store.page === 'deploy'" />
   <Footer v-if="store.user" />
 </template>
 
@@ -18,6 +19,7 @@ import Navbar from "./components/Navbar.vue"
 import Footer from "./components/Footer.vue"
 import Firewall from "./components/Firewall.vue"
 import Services from "./components/Services.vue"
+import Deploy from "./components/Deploy.vue"
 
 export default {
   components: {
@@ -28,6 +30,7 @@ export default {
     Footer,
     Firewall,
     Services,
+    Deploy,
   },
 
   setup() {
