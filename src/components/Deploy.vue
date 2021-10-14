@@ -11,7 +11,7 @@
                 <label class="visually-hidden" for="autoSizingSelect">Preference</label>
                 <select v-model="template" class="form-select" @change.prevent="generateFromTemplate()">
                     <option value="0">Deploy from Template...</option>
-                    <option value="1">Minecraft</option>
+                    <option value="1">Minecraft (PaperMC)</option>
                     <option value="2">Node</option>
                     <option value="3">Python</option>
                 </select><br>
@@ -23,6 +23,7 @@
 
 <script>
 import { store } from "../store"
+import axios from 'axios'
 
 export default {
     data: function() {
@@ -45,7 +46,7 @@ export default {
                     name: '',
                     command: 'java -jar',
                     file: 'server.jar',
-                    deploy: '#!/bin/bash\nmkdir %%name%%\ncd %%name%%\nwget https://papermc.io/api/v2/projects/paper/versions/1.17.1/builds/327/downloads/paper-1.17.1-327.jar -O server.jar\necho "eula=true" > eula.txt'
+                    deploy: '#!/bin/bash\nmkdir %%name%%\ncd %%name%%\nwget %%latestPaper%% -O server.jar\necho "eula=true" > eula.txt'
                 },
                 {
                     name: '',
@@ -64,7 +65,14 @@ export default {
     },
     methods: {
         generateFromTemplate: function() {
-            this.currentTemplate = this.templates[this.template]
+            this.currentTemplate = this.templates[this.template];
+            axios.get("https://papermc.io/api/v2/projects/paper").then(r1 => {
+                axios.get("https://papermc.io/api/v2/projects/paper/versions/"+r1.data.versions[r1.data.versions.length - 1]).then(r2 => {
+                    axios.get("https://papermc.io/api/v2/projects/paper/versions/"+r2.data.version+"/builds/"+r2.data.builds[r2.data.builds.length - 1]).then(r3 => {
+                        this.currentTemplate.deploy = this.currentTemplate.deploy.replaceAll("%%latestPaper%%", 'https://papermc.io/api/v2/projects/paper/versions/'+r3.data.version+"/builds/"+r3.data.build+"/downloads/"+r3.data.downloads.application.name)
+                    })
+                })
+            })
         },
         deployService: function() {
             //TODO: Service deployment
