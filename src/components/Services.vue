@@ -93,11 +93,13 @@ export default {
             })
         },
         removeService: function(service, key) {
-            const backend = import.meta.env.VITE_BACKEND
-            axios.post(backend+"/api/v1/stop", {user_id: store.user.id, name: service})
-            axios.post(backend+"/api/v1/delservice", {user_id: store.user.id, name: service}).then(
-                store.services.splice(key, 1)
-            )
+            if (confirm("Do you really want to remove that service?\nWarning: All data will be irrecoverably deleted")) {
+                const backend = import.meta.env.VITE_BACKEND
+                axios.post(backend+"/api/v1/stop", {user_id: store.user.id, name: service})
+                axios.post(backend+"/api/v1/delservice", {user_id: store.user.id, name: service}).then(
+                    store.services.splice(key, 1)
+                )
+            }
         },
         startService: function(service, key) {
             const backend = import.meta.env.VITE_BACKEND
