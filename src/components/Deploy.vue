@@ -21,7 +21,7 @@
                     {{ successMessage }}
                 </div>
             </div>
-            <button class="btn btn-warning" @click.prevent="page='services'" style="float:right;"><i class="fa fa-chevron-left" style="margin-right:4px;" aria-hidden="true"></i> Back</button>
+            <button class="btn btn-warning" @click.prevent="back" style="float:right;"><i class="fa fa-chevron-left" style="margin-right:4px;" aria-hidden="true"></i> Back</button>
             <br><br><h1>Deploy or edit service</h1>
             <form>
                 <input type="text" v-model="currentTemplate.name" class="form-control" placeholder="Service name"><br>
@@ -44,6 +44,7 @@
 <script>
 import { store } from "../store"
 import axios from 'axios'
+import { findParameter } from '../globalfunc'
 
 export default {
     data: function() {
@@ -108,13 +109,15 @@ export default {
                 this.currentTemplate.deploy = this.currentTemplate.deploy.replaceAll("%%name%%", this.currentTemplate.name)
                 this.isDeploying = true
                 axios.post(backend+"/api/v1/deploy", {user_id: store.user.id, payload: this.currentTemplate}).then(() => {
-                    store.page = 'services'
-                    this.isDeploying = false
+                    back()
                 })
             } else {
                 this.isError = true
                 this.errorMessage = "Name cannot be empty"
             }
+        },
+        back: function() {
+            store.page = 'services'
         }
     },
     computed: {

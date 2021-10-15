@@ -2,5 +2,8 @@ import { reactive } from "vue"
 
 export const store = reactive({
   user: {},
-  page: 'home'
+  page: 'home',
+  services: [],
+  template: {},
+  consoleText: ''
 })

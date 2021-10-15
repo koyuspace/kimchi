@@ -130,12 +130,13 @@ div {
 <script>
 import { supabase } from "../supabase"
 import { store } from "../store"
+import { loadServices, findParameter } from "../globalfunc"
 import { onMounted } from "vue"
 import axios from 'axios'
 
 export default {
     setup() {
-        async function getProfile() {
+        async function loadHome() {
             store.user = supabase.auth.user()
 
             let { data, error, status } = await supabase
@@ -207,10 +208,11 @@ export default {
             }
 
             startTime()
+            loadServices()
         }
       
         onMounted(() => {
-        getProfile()
+            loadHome()
         })
     },
     computed: {

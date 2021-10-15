@@ -9,28 +9,37 @@
                         <th scope="col">Name</th>
                         <th scope="col">Status</th>
                         <th scope="col">Actions</th>
+                        <th scope="col">Type</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
                         <td>kimchi-frontend</td>
                         <td>Running</td>
-                        <td><button class="btn btn-danger" disabled><i class="fa fa-stop" aria-hidden="true"></i></button> <button class="btn btn-warning" disabled><i class="fa fa-refresh" aria-hidden="true"></i></button> <button class="btn btn-primary" disabled><i class="fa fa-terminal" aria-hidden="true"></i></button> <button class="btn btn-secondary" disabled><i class="fa fa-pencil" aria-hidden="true"></i></button></td>
+                        <td></td>
+                        <td>Core</td>
                     </tr>
                     <tr>
                         <td>kimchi-backend</td>
                         <td>Running</td>
-                        <td><button class="btn btn-danger" disabled><i class="fa fa-stop" aria-hidden="true"></i></button> <button class="btn btn-warning" disabled><i class="fa fa-refresh" aria-hidden="true"></i></button> <button class="btn btn-primary" disabled><i class="fa fa-terminal" aria-hidden="true"></i></button> <button class="btn btn-secondary" disabled><i class="fa fa-pencil" aria-hidden="true"></i></button></td>
+                        <td></td>
+                        <td>Core</td>
                     </tr>
                     <tr>
                         <td>firewall</td>
                         <td v-html="firewallStatus"></td>
                         <td><button class="btn btn-danger" v-if="firewallStatus==='Running'" @click.prevent="disableFirewall"><i class="fa fa-stop" aria-hidden="true"></i></button> <button class="btn btn-success" v-if="firewallStatus==='Stopped'" @click.prevent="enableFirewall"><i class="fa fa-play" aria-hidden="true"></i></button> <button class="btn btn-secondary" @click.prevent="page='firewall'"><i class="fa fa-pencil" aria-hidden="true"></i></button></td>
+                        <td>System</td>
                     </tr>
                     <tr v-for="(service,key) in services" :key="key" >
                         <td>{{service.name}}</td>
-                        <td></td>
-                        <td><button class="btn btn-danger" :v-if="service.isRunning" @click.prevent="stopService(service.name)"><i class="fa fa-stop" aria-hidden="true"></i></button> <button class="btn btn-success" :v-if="!service.isRunning" @click.prevent="startService(service.name)"><i class="fa fa-play" aria-hidden="true"></i></button> <button class="btn btn-warning" disabled><i class="fa fa-refresh" aria-hidden="true"></i></button> <button class="btn btn-primary" disabled><i class="fa fa-terminal" aria-hidden="true"></i></button> <button class="btn btn-secondary" disabled><i class="fa fa-pencil" aria-hidden="true"></i></button> <button class="btn btn-danger" @click="removeService(service.name,key)"><i class="fa fa-times" aria-hidden="true" @click="removeService(service.name,key)"></i></button></td>
+                        <td>
+                            <span v-if="service.isRunning==='yes'">Running</span>
+                            <span v-if="service.isRunning==='no'">Stopped</span>
+                            <span v-if="service.isRunning==='deploying'">Deploying</span>
+                        </td>
+                        <td><button class="btn btn-danger" v-if="service.isRunning==='yes'" @click.prevent="stopService(service.name,key)"><i class="fa fa-stop" aria-hidden="true" @click.prevent="stopService(service.name,key)"></i></button> <button class="btn btn-success" v-if="service.isRunning==='no'" @click.prevent="startService(service.name,key)"><i class="fa fa-play" aria-hidden="true"></i></button> <button class="btn btn-danger" :disabled="service.isRunning==='deploying'" @click.prevent="removeService(service.name,key)"><i class="fa fa-times" aria-hidden="true"></i></button> <a class="btn btn-primary" :href="'#page=console&name='+service.name"><i class="fa fa-terminal" aria-hidden="true"></i></a></td>
+                        <td>User</td>
                     </tr>
                 </tbody>
             </table>
@@ -41,6 +50,7 @@
 <script>
 import { store } from "../store"
 import axios from 'axios'
+import { loadServices } from '../globalfunc'
 
 Array.prototype.remove = function() {
   var what, a = arguments, L = a.length, ax
@@ -57,10 +67,9 @@ export default {
     data: function() {
         return {
             firewallStatus: 'Running',
-            services: []
         }
     },
-    created() {
+    mounted() {
         const backend = import.meta.env.VITE_BACKEND
         axios.post(backend+"/api/v1/ufw/status", {user_id: store.user.id}).then(response => {
             if (response.data.includes("inactive")) {
@@ -68,18 +77,6 @@ export default {
             } else {
                 this.firewallStatus = "Running"
             }
-        })
-        axios.post(backend+"/api/v1/getservices", {user_id: store.user.id}).then(response => {
-            let servicesArr = []
-            response.data.split("\n").forEach(e => {
-                if (e !== "") {
-                    let serviceName = e
-                    axios.post(backend+"/api/v1/servicerunning", {user_id: store.user.id, name: serviceName}).then(response => {
-                        servicesArr.push({name: serviceName, isRunning: Boolean(response.data)})
-                    })
-                }
-            });
-            this.services = servicesArr
         })
     },
     methods: {
@@ -97,26 +94,38 @@ export default {
         },
         removeService: function(service, key) {
             const backend = import.meta.env.VITE_BACKEND
+            axios.post(backend+"/api/v1/stop", {user_id: store.user.id, name: service})
             axios.post(backend+"/api/v1/delservice", {user_id: store.user.id, name: service}).then(
-                this.services.splice(key, 1)
+                store.services.splice(key, 1)
             )
         },
-        startService: function(name) {
+        startService: function(service, key) {
             const backend = import.meta.env.VITE_BACKEND
-            axios.post(backend+"/api/v1/start", {user_id: store.user.id, name: name})
+            axios.post(backend+"/api/v1/start", {user_id: store.user.id, name: service}).then(()=> {
+                store.services[key].isRunning = true
+                loadServices()
+            })
         },
-        stopService: function(name) {
+        stopService: function(service, key) {
             const backend = import.meta.env.VITE_BACKEND
-            axios.post(backend+"/api/v1/stop", {user_id: store.user.id, name: name})
+            axios.post(backend+"/api/v1/stop", {user_id: store.user.id, name: service}).then(() =>{
+                store.services[key].isRunning = false
+                loadServices()
+            })
         }
     },
     computed: {
         page: {
             get() {
-                return store.page;
+                return store.page
             },
             set(s) {
-                store.page = s;
+                store.page = s
+            }
+        },
+        services: {
+            get() {
+                return store.services
             }
         }
     }
@@ -146,7 +155,8 @@ h1 {
     border: 1px solid #ccc;
     width: 80%;
 }
-button i {
+button i,
+a .fa {
     color: #fff;
 }
 </style>

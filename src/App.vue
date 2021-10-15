@@ -6,12 +6,14 @@
   <Firewall v-if="store.user && store.page === 'firewall'" />
   <Services v-if="store.user && store.page === 'services'" />
   <Deploy v-if="store.user && store.page === 'deploy'" />
+  <Console v-if="store.user && store.page === 'console'" />
   <Footer v-if="store.user" />
 </template>
 
 <script>
 import { store } from "./store"
 import { supabase } from "./supabase"
+import { loadServices, findParameter } from "./globalfunc"
 import Auth from "./components/Auth.vue"
 import Profile from "./components/Profile.vue"
 import Home from "./components/Home.vue"
@@ -20,6 +22,7 @@ import Footer from "./components/Footer.vue"
 import Firewall from "./components/Firewall.vue"
 import Services from "./components/Services.vue"
 import Deploy from "./components/Deploy.vue"
+import Console from "./components/Console.vue"
 
 export default {
   components: {
@@ -31,6 +34,7 @@ export default {
     Firewall,
     Services,
     Deploy,
+    Console,
   },
 
   setup() {
@@ -43,5 +47,17 @@ export default {
       store,
     }
   },
+  mounted() {
+    window.setInterval(function() {
+      if (findParameter("page")) {
+          store.page = findParameter("page")
+          loadServices()
+          var myUrl = new URL(window.location.href.replace(/#/g,"?"))
+          myUrl.searchParams.delete("page")
+          myUrl = myUrl.href.replace("?","#")
+          location.href = myUrl
+      }
+    }, 20)
+  }
 }
 </script>

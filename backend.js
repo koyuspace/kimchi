@@ -202,9 +202,10 @@ app.post('/api/v1/deploy', (req, res) => {
         fs.writeFile("services/"+name+"-deploy.sh", deployInfo.deploy,() => {
           exec("chmod +x services/"+name+"-deploy.sh", () => {
             exec("bash -c \"cd services && ./"+name+"-deploy.sh\"", (error, stdout, stderr) => {
-              console.log(stdout)
               fs.writeFile("services/"+name+"/start.sh", deployInfo.command+" "+deployInfo.file,() => {
                 exec("chmod +x services/"+name+"/start.sh")
+                exec("rm -f services/"+name+"-deploy.sh")
+                fs.writeFile("services/template-"+name+".json", JSON.stringify(deployInfo), ()=>{})
               })
             })
           })
@@ -239,7 +240,8 @@ app.post('/api/v1/stop', (req, res) => {
     });
     if (authenticated) {
       const name = req.body.name
-      exec("bash -c \"screen -ls "+name+" | grep -E '\s+[0-9]+\.' | awk -F ' ' '{print $1}' | while read s; do screen -XS $s quit; done\"")
+      exec("screen -X -S "+name+" kill")
+      exec("rm -f logs/"+req.body.name+"-run.log")
     }
   }
 })
@@ -276,6 +278,8 @@ app.post('/api/v1/delservice', (req, res) => {
     if (authenticated) {
       const name = req.body.name
       exec("rm -rf services/"+name)
+      exec("rm -f services/template-"+name+".json")
+      exec("rm -f logs/"+name+"-run.log")
     }
   }
 })
@@ -289,13 +293,64 @@ app.post('/api/v1/servicerunning', (req, res) => {
       }
     });
     if (authenticated) {
-      let isServiceRunning = "false"
+      let isServiceRunning = "no"
       exec("bash -c \"screen -ls | grep "+req.body.name+"\"", (error, stdout, stderr) => {
         if (stdout.includes(req.body.name)) {
-          isServiceRunning = "true" 
+          isServiceRunning = "yes" 
+        }
+        if (fs.existsSync("services/"+req.body.name+"-deploy.sh")) {
+          isServiceRunning = "deploying"
         }
         res.send(isServiceRunning)
       })
+    }
+  }
+})
+
+app.post('/api/v1/gettemplate', (req, res) => {
+  if (req.body.user_id) {
+    let authenticated = false
+    process.env.OPS.split(",").forEach(e => {
+      if (e === req.body.user_id) {
+        authenticated = true
+      }
+    });
+    if (authenticated) {
+      fs.readFile("services/template-"+req.body.name+".json", (err, data) => {
+        res.send(data.toString())
+      })
+    }
+  }
+})
+
+app.post('/api/v1/log', (req, res) => {
+  if (req.body.user_id) {
+    let authenticated = false
+    process.env.OPS.split(",").forEach(e => {
+      if (e === req.body.user_id) {
+        authenticated = true
+      }
+    });
+    if (authenticated) {
+      fs.readFile("logs/"+req.body.name+"-run.log", (err, data) => {
+        if (data) {
+          res.send(data.toString())
+        }
+      })
+    }
+  }
+})
+
+app.post('/api/v1/enter', (req, res) => {
+  if (req.body.user_id) {
+    let authenticated = false
+    process.env.OPS.split(",").forEach(e => {
+      if (e === req.body.user_id) {
+        authenticated = true
+      }
+    });
+    if (authenticated) {
+      exec("bash -c \"screen -S "+req.body.name+" -p 0 -X stuff '"+req.body.command+"^M'\"")
     }
   }
 })
