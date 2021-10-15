@@ -35,7 +35,7 @@
                     <option value="2">Node</option>
                     <option value="3">Python</option>
                 </select><br>
-                <button @click.prevent="deployService" class="btn btn-primary form-control"><i class="fa fa-cogs" aria-hidden="true"></i> Deploy Service</button>
+                <button @click.prevent="deployService" :disabled="isDeploying" class="btn btn-primary form-control"><i class="fa fa-cogs" aria-hidden="true"></i> Deploy Service</button>
             </form>
         </div>
     </div>
@@ -57,6 +57,7 @@ export default {
             },
             isError: false,
             isSuccess: false,
+            isDeploying: false,
             errorMessage: '',
             successMessage: '',
             templates: [
@@ -101,11 +102,15 @@ export default {
         deployService: function() {
             //TODO: Service deployment
             this.isError = false
+            const backend = import.meta.env.VITE_BACKEND
             if (this.currentTemplate.name !== '') {
                 this.currentTemplate.name = this.currentTemplate.name.replaceAll(" ", "-").toLowerCase()
                 this.currentTemplate.deploy = this.currentTemplate.deploy.replaceAll("%%name%%", this.currentTemplate.name)
-                this.isError = true
-                this.errorMessage = "Not implemented yet"
+                this.isDeploying = true
+                axios.post(backend+"/api/v1/deploy", {user_id: store.user.id, payload: this.currentTemplate}).then(() => {
+                    store.page = 'services'
+                    this.isDeploying = false
+                })
             } else {
                 this.isError = true
                 this.errorMessage = "Name cannot be empty"

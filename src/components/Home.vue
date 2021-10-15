@@ -195,7 +195,9 @@ export default {
                 let s = today.getSeconds();
                 m = checkTime(m);
                 s = checkTime(s);
-                document.getElementById('clock').innerHTML =  h + ":" + m + ":" + s;
+                try {
+                    document.getElementById('clock').innerHTML =  h + ":" + m + ":" + s;
+                } catch (e) {}
                 setTimeout(startTime, 1000);
             }
 
