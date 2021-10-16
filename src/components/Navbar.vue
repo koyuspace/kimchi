@@ -14,7 +14,7 @@
                     <a :class="{ 'nav-link': true, active: page === 'services'}" @click.prevent="page='services'" href="#">Services</a>
                 </li>
                 <li class="nav-item">
-                    <a :class="{ 'nav-link': true, active: page === 'firewall'}" @click.prevent="page='firewall'" href="#">Firewall</a>
+                    <a :class="{ 'nav-link': true, active: page === 'about'}" @click.prevent="page='about'" href="#">About</a>
                 </li>
             </ul>
             <ul class="navbar-nav">

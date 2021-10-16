@@ -7,6 +7,7 @@
   <Services v-if="store.user && store.page === 'services'" />
   <Deploy v-if="store.user && store.page === 'deploy'" />
   <Console v-if="store.user && store.page === 'console'" />
+  <About v-if="store.user && store.page === 'about'" />
   <Footer v-if="store.user" />
 </template>
 
@@ -23,6 +24,7 @@ import Firewall from "./components/Firewall.vue"
 import Services from "./components/Services.vue"
 import Deploy from "./components/Deploy.vue"
 import Console from "./components/Console.vue"
+import About from "./components/About.vue"
 
 export default {
   components: {
@@ -34,7 +36,7 @@ export default {
     Firewall,
     Services,
     Deploy,
-    Console,
+    About,
   },
 
   setup() {
