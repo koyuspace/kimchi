@@ -27,7 +27,7 @@ export default {
         window.setInterval(function() {
             try {
                 const el = document.getElementById("consoletext")
-                el.scrollBy(0, 9999999999999999999999)
+                el.scrollBy(0, 999)
             } catch (e) {}
             const backend = import.meta.env.VITE_BACKEND
             axios.post(backend+"/api/v1/log", {user_id: store.user.id, name: findParameter("name")}).then(response => {
@@ -48,14 +48,6 @@ export default {
             const consoleInput = this.consoleInput
             this.consoleInput = ''
             axios.post(backend+"/api/v1/enter", {user_id: store.user.id, name: findParameter("name"), command: consoleInput})
-        }
-    },
-    watch: {
-        count: function() {
-            this.$nextTick(function() {
-                var container = this.$refs.consoletext;
-                container.scrollTop = container.scrollHeight + 120;
-            });
         }
     }
 }
