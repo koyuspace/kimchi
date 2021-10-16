@@ -33,7 +33,7 @@ export default {
             axios.post(backend+"/api/v1/log", {user_id: store.user.id, name: findParameter("name")}).then(response => {
                 store.consoleText = response.data.toString().replaceAll("[m", "").replaceAll("[33;1m", "").replaceAll("[31;1m", "").replaceAll("[K", "").replaceAll("[K", "").replaceAll("[?1h=[?2004h> ", "").replaceAll(">", "").replaceAll("\n", "<br>").replaceAll("[31ml[0m[31mi[0m[31ms[0m", "").replaceAll("[?1l[?1000l[?2004l", "").replaceAll("[31ms[0m[31mt[0m[31mo[0m", "")
             })
-        }, 500)
+        }, 100)
     },
     computed: {
         consoleText: {
