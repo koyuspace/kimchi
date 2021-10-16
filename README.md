@@ -7,6 +7,7 @@
 * Install yarn and NodeJS
 * Clone the repo
 * Create the directories `logs` and `services`
+* Install `screen` and `ufw`
 * Run `yarn build`
 * Start the backend server with `node backend.js`
 * Let nginx serve the dist folder and reverse proxy the backend to `/api/v1`
