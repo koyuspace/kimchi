@@ -4,7 +4,7 @@
             <h1>About Kimchi</h1>
             <p><strong>Kimchi</strong> (김치) is a friendly server management tool written by koyu.space. We made that software in hope it will be useful to you. As always the source code is available so if you want to extend it go ahead.</p>
             <p><strong>Version:</strong> {{ appVersion }}</p><br>
-            <p><a href="https://github.com/koyuspace/kimchi" class="btn btn-primary" target="_blank"><i class="fa fa-github" aria-hidden="true"></i> GitHub</a> <a href="https://creapaid.com/koyuspace" class="btn btn-danger" target="_blank"><i class="fa fa-heart" aria-hidden="true"></i> Donate</a></p>
+            <p><a href="https://github.com/koyuspace/kimchi" class="btn btn-primary" target="_blank"><i class="fa fa-github" aria-hidden="true"></i> GitHub</a> <a href="https://creators.mstdn.social/koyuspace" class="btn btn-danger" target="_blank"><i class="fa fa-heart" aria-hidden="true"></i> Donate</a></p>
             <p></p>
         </div>
     </div>
