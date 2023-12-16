@@ -100,7 +100,7 @@ app.post('/api/v1/ufw/status', (req, res) => {
       }
     });
     if (authenticated) {
-      exec("echo "+process.env.SUDO_PW+" | sudo -S ufw status", (error, stdout, stderr) => {
+      exec("echo "+process.env.SUDO_PW+" | LANG=C sudo -S ufw status", (error, stdout, stderr) => {
         res.send(stdout)
       })
     }
@@ -332,10 +332,13 @@ app.post('/api/v1/log', (req, res) => {
       }
     });
     if (authenticated) {
-      fs.readFile("logs/"+req.body.name+"-run.log", (err, data) => {
+      /*fs.readFile("logs/"+req.body.name+"-run.log", (err, data) => {
         if (data) {
           res.send(data.toString())
         }
+      })*/
+      exec("cat logs/"+req.body.name+"-run.log | perl -pe 's/\x1b\[[0-9;]*[mG]//g'", (error, stdout, stderr) => {
+        res.send(stdout);
       })
     }
   }

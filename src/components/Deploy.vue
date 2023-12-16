@@ -71,7 +71,7 @@ export default {
                 {
                     name: '',
                     command: 'java -jar',
-                    file: 'server.jar',
+                    file: 'server.jar -nogui',
                     deploy: '#!/bin/bash\nmkdir %%name%%\ncd %%name%%\nwget %%latestPaper%% -O server.jar\necho "eula=true" > eula.txt'
                 },
                 {
